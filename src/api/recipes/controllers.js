@@ -52,7 +52,7 @@ async function remove(request, response) {
 }
 
 async function updateImageField(request, response) {
-    const path = request.headers.host + '/src/uploads';
+    const path = `${request.headers.host}/src/uploads`;
 
     await recipe.updateImageField(request.params.id, 
         path, request.file.filename, request.userLogged);

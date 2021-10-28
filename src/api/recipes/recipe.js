@@ -89,7 +89,7 @@ async function updateImageField(id, path, fileName, userLogged) {
         { _id: oId },
         {
             $set: {
-                image: path + '/' + fileName,
+                image: `${path}/${fileName}`,
             },
         },
     );
