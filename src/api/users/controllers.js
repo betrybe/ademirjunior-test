@@ -1,5 +1,5 @@
 const validations = require('../../helpers/validations');
-const User = require('./user');
+const user = require('./user');
 
 function validInputStore(request) {
     let valid = true;
@@ -17,8 +17,6 @@ async function store(request, response) {
         response.status(400).json({ message: 'Invalid entries. Try again.' });
         return false;
     }
-
-    const user = new User();
 
     user.emailExists(request.body.email)
         .then(async (exist) => {
@@ -44,8 +42,6 @@ async function storeAdmin(request, response) {
     if (request.userLogged.role !== 'admin') {
         return response.status(403).json({ message: 'Only admins can register new admins' });
     }
-
-    const user = new User();
 
     user.emailExists(request.body.email)
         .then(async (exist) => {
