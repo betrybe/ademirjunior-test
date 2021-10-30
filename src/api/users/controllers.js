@@ -26,9 +26,8 @@ async function store(request, response) {
             }
 
             user.create(request.body.name, request.body.email, request.body.password)
-            .then(() => {
-                delete user.password;
-                response.status(201).json({ user });    
+            .then((userDto) => {
+                response.status(201).json({ user: userDto });    
             });        
         })
         .catch((e) => console.log(e));
@@ -50,9 +49,8 @@ async function storeAdmin(request, response) {
             }
 
             user.createAdmin(request.body.name, request.body.email, request.body.password)
-            .then(() => {
-                delete user.password;
-                return response.status(201).json({ user });    
+            .then((userDto) => {
+                return response.status(201).json({ user: userDto });    
             });        
         }).catch((e) => console.log(e));
 }

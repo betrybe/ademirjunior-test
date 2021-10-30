@@ -17,31 +17,35 @@ async function findById(id) {
 }
 
 async function create(name, email, password) {
-    this.name = name;
-    this.email = email;
-    this.password = password;
-    this.role = 'user';
+    const userDto = {
+        name,
+        email,
+        password,
+        role: 'user',
+    };
 
     const db = await database.connect();
     console.debug('Creating user');
-    const res = await db.collection('users').insertOne(this);
-    const u = await findById(res.insertedId);
-    console.log('User created', await u._id);
-    return u;    
+    await db.collection('users').insertOne(userDto);
+    delete userDto.password; // não expor a senha
+    console.log('User created', await userDto);
+    return userDto;    
 }
 
 async function createAdmin(name, email, password) {
-    this.name = name;
-    this.email = email;
-    this.password = password;
-    this.role = 'admin';
+    const userDto = {
+        name,
+        email,
+        password,
+        role: 'admin',
+    };
 
     const db = await database.connect();
     console.debug('Creating user admin');
-    const res = await db.collection('users').insertOne(this);
-    const u = await findById(res.insertedId);
-    console.log('Admin created', await u._id);
-    return u;        
+    await db.collection('users').insertOne(userDto);
+    delete userDto.password; // não expor a senha
+    console.log('Admin created', await userDto._id);
+    return userDto;        
 }
 
 async function emailExists(email) {
