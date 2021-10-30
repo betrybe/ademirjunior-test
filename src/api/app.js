@@ -15,13 +15,4 @@ app.use('/', require('./auth/routes'));
 app.use('/', require('./users/routes'));
 app.use('/', require('./recipes/routes'));
 
-app.get('/teste', (request, response) => {
-  db.connect(() => {
-    console.log('conectado no endpoint teste');
-  }, () => {
-    console.log('erro ao conectar');
-  });
-  response.send('Funcionando ....');
-});
-
 module.exports = app;
