@@ -23,13 +23,7 @@ async function login(email, password) {
     return token;
 }
 
-async function emailExists(email) {
-    const db = await database.connect();
-    const count = await db.collection('users').countDocuments({ email });
-    return count > 0;
-}
 
 module.exports = {
     login,
-    emailExists,
 };
