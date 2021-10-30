@@ -1,4 +1,20 @@
+const { ObjectID } = require('mongodb');
 const database = require('../database');
+
+async function findById(id) {
+    console.log('Find user');
+    const db = await database.connect();
+    
+    let res = null;
+    try {
+        const oId = ObjectID(id);
+        res = await db.collection('users').findOne({ _id: oId });
+    } catch (e) {
+        console.log(e);
+    }
+
+    return res;
+}
 
 async function create(name, email, password) {
     this.name = name;
@@ -9,8 +25,9 @@ async function create(name, email, password) {
     const db = await database.connect();
     console.debug('Creating user');
     const res = await db.collection('users').insertOne(this);
-    // eslint-disable-next-line no-underscore-dangle
-    this._id = res.insertedId;
+    const u = await findById(res.insertedId);
+    console.log('User created', await u._id);
+    return u;    
 }
 
 async function createAdmin(name, email, password) {
@@ -22,7 +39,9 @@ async function createAdmin(name, email, password) {
     const db = await database.connect();
     console.debug('Creating user admin');
     const res = await db.collection('users').insertOne(this);
-    this._id = res.insertedId;
+    const u = await findById(res.insertedId);
+    console.log('Admin created', await u._id);
+    return u;        
 }
 
 async function emailExists(email) {
