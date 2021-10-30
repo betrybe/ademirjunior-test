@@ -14,16 +14,6 @@ async function connect() {
     return conn.db(DB_NAME);
 }
 
-function getDB() {
-    return db;
-}
-
-function close() {
-    db.close();
-}
-
 module.exports = {
     connect,
-    getDB,
-    close,
 };
