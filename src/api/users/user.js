@@ -1,4 +1,3 @@
-const { ObjectID } = require('mongodb');
 const database = require('../database');
 
 async function create(name, email, password) {
