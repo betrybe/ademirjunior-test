@@ -3,6 +3,7 @@ const user = require('../api/users/user');
 const auth = require('../api/auth/auth');
 const jwt = require('../api/auth/jwt');
 const database = require('../api/database');
+const sinon = require('sinon');
 
 let db;
 
@@ -78,6 +79,74 @@ describe('Auth service', () => {
         } catch (error) {
             return expect(error.message).to.be.equals('Incorrect username or password');
         }
+    });
+});
+
+describe('JWT service', () => {
+    it('Token é válido para usuário autenticado', async ()=> {
+        const token = await auth.login('nuno@gg.com', '123');
+        
+        const req = {
+            headers: {
+                authorization: token,
+            }
+        };
+
+        jwt.isValid(req, null, () =>{});
+
+        expect(req).to.have.property('userLogged');
+    });
+
+    it('Não passa se nenhum token é informado no header da requisição', async ()=> {
+        const req = {
+            headers: {}
+        };
+
+        const Res = function() {
+            this.codeStatus= 200,
+            this.body= {},
+            this.json= (content) =>{
+                this.body = content;
+                return this;
+            };
+            this.status= (code) =>{ 
+                this.codeStatus = code;
+                return this;
+            };
+        };
+
+        const res = new Res();
+        const valid = jwt.isValid(req, res, () =>{});
+
+        expect(valid.codeStatus).to.be.equals(401);
+        expect(valid.body.message).to.be.equals('missing auth token');
+    });
+
+    it('Não passa se o token informado não é válido', async ()=> {
+        const req = {
+            headers: {
+                authorization: 'aaa',
+            }
+        };
+
+        const Res = function() {
+            this.codeStatus= 200,
+            this.body= {},
+            this.json= (content) =>{
+                this.body = content;
+                return this;
+            };
+            this.status= (code) =>{ 
+                this.codeStatus = code;
+                return this;
+            };
+        };
+
+        const res = new Res();
+        const valid = jwt.isValid(req, res, () =>{});
+
+        expect(valid.codeStatus).to.be.equals(401);
+        expect(valid.body.message).to.be.equals('jwt malformed');
     });
 
 });
