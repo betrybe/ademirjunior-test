@@ -64,4 +64,20 @@ describe('Auth service', () => {
         expect(req.userLogged.email).to.be.equals('nuno@gg.com');
     });
 
+    it('Login não acontece com email errado', async ()=> {
+        try {
+            await auth.login('nuno@gg.com.br', '123');
+        } catch (error) {
+            return expect(error.message).to.be.equals('Incorrect username or password');
+        }
+    });
+
+    it('Login não acontece com senha errada', async ()=> {
+        try {
+            await auth.login('nuno@gg.com', '1123');
+        } catch (error) {
+            return expect(error.message).to.be.equals('Incorrect username or password');
+        }
+    });
+
 });
