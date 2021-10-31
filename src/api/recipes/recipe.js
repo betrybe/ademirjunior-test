@@ -1,21 +1,6 @@
 const { ObjectID } = require('mongodb');
 const database = require('../database');
 
-async function findById(id) {
-    console.log('Find recipe');
-    const db = await database.connect();
-    
-    let res = null;
-    try {
-        const oId = ObjectID(id);
-        res = await db.collection('recipes').findOne({ _id: oId });
-    } catch (e) {
-        console.log(e);
-    }
-
-    return res;
-}
-
 function mapDto(name, ingredients, preparation, userId) {
     return {
         name,
@@ -122,7 +107,6 @@ async function remove(id, userLogged) {
 
 module.exports = {
     create,
-    findById,
     getAll,
     remove,
     update,
