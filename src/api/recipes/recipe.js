@@ -16,18 +16,23 @@ async function findById(id) {
     return res;
 }
 
+function mapDto(name, ingredients, preparation, userId) {
+    return {
+        name,
+        ingredients,
+        preparation,
+        userId,
+    };
+}
+
 async function create(name, ingredients, preparation, userId) {
-    this.name = name;
-    this.ingredients = ingredients;
-    this.preparation = preparation;
-    this.userId = userId;
+    const dto = mapDto(name, ingredients, preparation, userId);
 
     const db = await database.connect();
     console.debug('Creating recipe');
-    const res = await db.collection('recipes').insertOne(this);
-    const rec = await findById(res.insertedId);
-    console.log('Recipe created', await rec._id);
-    return rec;
+    await db.collection('recipes').insertOne(dto);
+    console.log('Recipe created', await dto._id);
+    return dto;
 }
 
 async function getAll() {
