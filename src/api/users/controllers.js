@@ -49,9 +49,7 @@ async function storeAdmin(request, response) {
             }
 
             user.createAdmin(request.body.name, request.body.email, request.body.password)
-            .then((userDto) => {
-                return response.status(201).json({ user: userDto });    
-            });        
+                .then((userDto) => response.status(201).json({ user: userDto }));
         }).catch((e) => console.log(e));
 }
 
