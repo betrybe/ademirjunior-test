@@ -7,6 +7,19 @@ const sinon = require('sinon');
 
 let db;
 
+let Res = function() {
+    this.codeStatus= 200,
+    this.body= {},
+    this.json= (content) =>{
+        this.body = content;
+        return this;
+    };
+    this.status= (code) =>{ 
+        this.codeStatus = code;
+        return this;
+    };
+};
+
 describe('User service', () => {
     before(async () => {
         db = await database.connect();
@@ -102,19 +115,6 @@ describe('JWT service', () => {
             headers: {}
         };
 
-        const Res = function() {
-            this.codeStatus= 200,
-            this.body= {},
-            this.json= (content) =>{
-                this.body = content;
-                return this;
-            };
-            this.status= (code) =>{ 
-                this.codeStatus = code;
-                return this;
-            };
-        };
-
         const res = new Res();
         const valid = jwt.isValid(req, res, () =>{});
 
@@ -129,20 +129,9 @@ describe('JWT service', () => {
             }
         };
 
-        const Res = function() {
-            this.codeStatus= 200,
-            this.body= {},
-            this.json= (content) =>{
-                this.body = content;
-                return this;
-            };
-            this.status= (code) =>{ 
-                this.codeStatus = code;
-                return this;
-            };
-        };
-
         const res = new Res();
+        console.log(res);
+
         const valid = jwt.isValid(req, res, () =>{});
 
         expect(valid.codeStatus).to.be.equals(401);

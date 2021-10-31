@@ -1,15 +1,8 @@
 const { expect } = require('chai');
-const MongoClient = require('mongodb/lib/mongo_client');
 const database = require('../api/database');
 const recipe = require('../api/recipes/recipe');
 
-const mongoDbUrl = 'mongodb://localhost:27017/Cookmaster';
-const url = 'http://localhost:3000';
-
 describe('Recipe service', () => {
-    let connection;
-    let db;
-  
     it('Inserir receita no banco', async () => {
       let db = await database.connect();
       await db.collection('recipes').deleteMany({});
