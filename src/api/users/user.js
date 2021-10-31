@@ -1,21 +1,6 @@
 const { ObjectID } = require('mongodb');
 const database = require('../database');
 
-async function findById(id) {
-    console.log('Find user');
-    const db = await database.connect();
-    
-    let res = null;
-    try {
-        const oId = ObjectID(id);
-        res = await db.collection('users').findOne({ _id: oId });
-    } catch (e) {
-        console.log(e);
-    }
-
-    return res;
-}
-
 async function create(name, email, password) {
     const userDto = {
         name,
