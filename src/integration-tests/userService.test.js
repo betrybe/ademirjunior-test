@@ -130,8 +130,6 @@ describe('JWT service', () => {
         };
 
         const res = new Res();
-        console.log(res);
-
         const valid = jwt.isValid(req, res, () =>{});
 
         expect(valid.codeStatus).to.be.equals(401);
