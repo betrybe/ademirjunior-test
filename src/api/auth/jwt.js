@@ -10,7 +10,7 @@ function isValid(request, response, next) {
         return response.status(401).json({ message: 'missing auth token' });
     }
     
-    jwt.verify(token, secretKey, (err, decoded) => {
+    return jwt.verify(token, secretKey, (err, decoded) => {
       if (err) {
           console.log('Token err', err.message);
           return response.status(401).json({ message: 'jwt malformed' });
