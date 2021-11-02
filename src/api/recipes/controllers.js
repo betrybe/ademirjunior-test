@@ -16,11 +16,9 @@ async function store(request, response) {
         return false;
     }
 
-    recipe.create(request.body.name, request.body.ingredients, 
-        request.body.preparation, request.userLogged._id)
-    .then((rec) => {
-        response.status(201).json({ recipe: rec });    
-    });        
+    const rec = await recipe.create(request.body.name, request.body.ingredients, 
+        request.body.preparation, request.userLogged._id);
+    return response.status(201).json({ recipe: rec });    
 }
 
 async function getOne(request, response) {
@@ -31,19 +29,19 @@ async function getOne(request, response) {
         return false;
     }
 
-    response.json(res);
+    return response.json(res);
 }
 
 async function getAll(request, response) {
     let res = await recipe.getAll();
     res = await res.toArray();
-    response.json(res);
+    return response.json(res);
 }
 
 async function update(request, response) {
     await recipe.update(request.params.id, request.body, request.userLogged);
     const rec = recipe.findById(request.params.id);
-    response.json(await rec);
+    return response.json(await rec);
 }
 
 async function remove(request, response) {
