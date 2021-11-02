@@ -14,23 +14,16 @@ function validInputStore(request) {
 
 async function store(request, response) {
     if (!validInputStore(request)) {
-        response.status(400).json({ message: 'Invalid entries. Try again.' });
-        return false;
+        return response.status(400).json({ message: 'Invalid entries. Try again.' });
     }
 
-    user.emailExists(request.body.email)
-        .then(async (exist) => {
-            if (exist) {
-                response.status(409).json({ message: 'Email already registered' });
-                return false;
-            }
+    const exist = await user.emailExists(request.body.email);
+    if (exist) {
+        return response.status(409).json({ message: 'Email already registered' });
+    }
 
-            user.create(request.body.name, request.body.email, request.body.password)
-            .then((userDto) => {
-                response.status(201).json({ user: userDto });    
-            });        
-        })
-        .catch((e) => console.log(e));
+    const userDto = await user.create(request.body.name, request.body.email, request.body.password);
+    return response.status(201).json({ user: userDto });    
 }
 
 async function storeAdmin(request, response) {
@@ -42,15 +35,14 @@ async function storeAdmin(request, response) {
         return response.status(403).json({ message: 'Only admins can register new admins' });
     }
 
-    user.emailExists(request.body.email)
-        .then(async (exist) => {
-            if (exist) {
-                return response.status(409).json({ message: 'Email already registered' });
-            }
+    const exist = await user.emailExists(request.body.email);
+    if (exist) {
+        return response.status(409).json({ message: 'Email already registered' });
+    }
 
-            user.createAdmin(request.body.name, request.body.email, request.body.password)
-                .then((userDto) => response.status(201).json({ user: userDto }));
-        }).catch((e) => console.log(e));
+    const b = request.body;
+    const userDto = await user.createAdmin(b.name, b.email, b.password);
+    return response.status(201).json({ user: userDto });
 }
 
 module.exports = {
