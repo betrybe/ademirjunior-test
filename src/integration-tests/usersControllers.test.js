@@ -16,7 +16,6 @@ let Res = function() {
     };
 };
 
-let userDto;
 let adminDto;
 
 describe('Users constrollers', () => {
