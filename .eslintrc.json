@@ -4,6 +4,7 @@
     "db": "writable"
   },
   "rules": {
-    "sonarjs/no-duplicate-string": ["error", 5]
+    "sonarjs/no-duplicate-string": ["error", 5],
+    "no-underscore-dangle":  ["error", { "allow": ["_id"] }]
   }
 }
